@@ -1,28 +1,25 @@
+import java.util.*;
+
 class Solution {
     public int minOperations(int[][] grid, int x) {
-        List<Integer> arr = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
 
-        for(int[] row : grid){
-            for(int v : row){
-                arr.add(v);
+        for (int[] row : grid) {
+            for (int val : row) {
+                list.add(val);
             }
         }
 
-        int base = arr.get(0);
-        for(int v : arr){
-            if(Math.abs(v - base) % x != 0)
-                return -1;
+        Collections.sort(list);
+        int median = list.get(list.size() / 2);
+
+        int operations = 0;
+        for (int num : list) {
+            int diff = Math.abs(num - median);
+            if (diff % x != 0) return -1;
+            operations += diff / x;
         }
 
-        Collections.sort(arr);
-
-        int median = arr.get(arr.size()/2);
-
-        int ops = 0;
-        for(int v : arr){
-            ops += Math.abs(v - median) / x;
-        }
-
-        return ops;
+        return operations;
     }
 }
