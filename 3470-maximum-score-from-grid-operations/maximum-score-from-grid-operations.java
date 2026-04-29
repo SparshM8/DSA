@@ -1,54 +1,28 @@
 class Solution {
-    public long maximumScore(int[][] A) {
-        int n = A.length;
-
-        long[][] B = new long[n][n + 1];
-        for (int j = 0; j < n; j++) {
-            for (int i = 0; i < n; i++) {
-                B[j][i + 1] = B[j][i] + A[i][j];
-            } 
-        }
-
-        long[] pdp = new long[n + 1];
-        long[] pep = new long[n + 1];
-
-        for (int j = 1; j < n; j++) {
-            long[] dp = new long[n + 1];
-            long[] ep = new long[n + 1];
-
-            for (int pb = 0; pb <= n; pb++) {
-                for (int cb = 0; cb <= n; cb++) {
-
-                    long pv = 0;
-                    if (cb > pb) {
-                        pv = B[j - 1][cb] - B[j - 1][pb];
-                    }
-
-                    long cv = 0;
-                    if (cb < pb) {
-                        cv = B[j][pb] - B[j][cb];
-                    }
-
-                    dp[cb] = Math.max(dp[cb],
-                            Math.max(pv + pdp[pb], pep[pb])
-                    );
-
-                    ep[cb] = Math.max(ep[cb],
-                            Math.max(cv + pep[pb],
-                                     cv + pv + pdp[pb])
-                    );
-                }
-            }
-
-            pdp = dp;
-            pep = ep;
-        }
-
-        long ans = 0;
-        for (long v : pep) {
-            ans = Math.max(ans, v);
-        }
-
-        return ans;
-    }
-}    
+	public long maximumScore(int[][] grid) {
+		int n = grid.length;
+		long[] dp1 = new long[n];
+		long[] dp2 = new long[n];
+		long res = 0, prev1 = 0, prev2 = 0;
+        int i = 0;
+		while (i < n - 1) {
+			long curr = score(grid, dp1, i, prev1, 0, 1, n);
+			prev1 = Math.max(res, prev2);
+			prev2 = score(grid, dp2, i + 1, res, n - 1, -1, -1);
+		    res = Math.max(prev1, curr);
+            i++;
+		}
+		return Math.max(res, prev2);
+	}
+    long score(int[][] grid, long[] dp, int col, long prev, int row, int dir, int stop) {
+		long max = 0;
+		while (row != stop) {
+            max = Math.max(max, prev);
+			prev = dp[row];
+            max += grid[row][col];
+			dp[row] = max;
+            row += dir;
+		}
+		return max;
+	}
+}
