@@ -8,14 +8,11 @@ class Solution {
             sum += nums[i];
             F += (long) i * nums[i];
         }
-
         long maxF = F;
-
        for (int i = 1; i < n; i++) {
             F = F + sum - (long) n * nums[n - i];
             maxF = Math.max(maxF, F);
-        }
-        
+        }    
         return (int) maxF;
     }
 }
