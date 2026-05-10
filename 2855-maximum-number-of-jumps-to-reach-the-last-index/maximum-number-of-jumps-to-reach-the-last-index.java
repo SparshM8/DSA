@@ -1,6 +1,5 @@
 class Solution {
     public int maximumJumps(int[] nums, int target) {
-
         int n = nums.length;
         int[] dp = new int[n];
         Arrays.fill(dp, -1);
