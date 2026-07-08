@@ -1,50 +1,31 @@
+MOD = 10**9 + 7
+pow10 = [1] * 100005
+for i in range(1, 100005):
+    pow10[i] = (pow10[i - 1] * 10) % MOD
+
 class Solution:
     def sumAndMultiply(self, s: str, queries: List[List[int]]) -> List[int]:
-        MOD = 1000000007
-        m = len(s)
+        n = len(s)
         
-        comp = []
-        prev_nonzero = [-1] * m
-        last_nz = -1
+        sum_pref = [0] * (n + 1)
+        x_pref = [0] * (n + 1)
+        count_pref = [0] * (n + 1)
         
-        for i, ch in enumerate(s):
-            if ch != '0':
-                comp.append(int(ch))
-                last_nz = len(comp) - 1
-            prev_nonzero[i] = last_nz
+        for i, c in enumerate(s):
+            d = int(c)
+            sum_pref[i + 1] = sum_pref[i] + d
+            count_pref[i + 1] = count_pref[i] + (d > 0)
             
-        sz = len(comp)
-        next_nonzero = [sz] * m
-        first_nz = sz
-        comp_idx = sz - 1
+            x_pref[i + 1] = (x_pref[i] * 10 + d) % MOD if d > 0 else x_pref[i]
+
+        ans = [0] * len(queries)
         
-        for i in range(m - 1, -1, -1):
-            if s[i] != '0':
-                first_nz = comp_idx
-                comp_idx -= 1
-            next_nonzero[i] = first_nz
+        for i, (l, r) in enumerate(queries):
+            length = count_pref[r + 1] - count_pref[l]
             
-        pref_sum = [0] * (sz + 1)
-        pref_val = [0] * (sz + 1)
-        pow10 = [1] * (sz + 1)
-        
-        for i in range(sz):
-            pref_sum[i + 1] = pref_sum[i] + comp[i]
-            pref_val[i + 1] = (pref_val[i] * 10 + comp[i]) % MOD
-            pow10[i + 1] = (pow10[i] * 10) % MOD
+            sub_val = (x_pref[r + 1] - x_pref[l] * pow10[length])
+            sub_sum = (sum_pref[r + 1] - sum_pref[l])
             
-        ans = []
-        for l, r in queries:
-            L = next_nonzero[l]
-            R = prev_nonzero[r]
-            
-            if L > R:
-                ans.append(0)
-            else:
-                length = R - L + 1
-                digit_sum = pref_sum[R + 1] - pref_sum[L]
-                
-                val = (pref_val[R + 1] - (pref_val[L] * pow10[length]) % MOD) % MOD
-                ans.append((val * digit_sum) % MOD)
-                
+            ans[i] = (sub_val * sub_sum) % MOD
+
         return ans
