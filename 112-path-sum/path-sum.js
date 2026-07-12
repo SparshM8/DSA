@@ -1,0 +1,1 @@
+const hasPathSum=(a,h)=>!!a&&(a.val===h&&!a.left&&!a.right||(hasPathSum(a.left,h-a.val)||hasPathSum(a.right,h-a.val)));
