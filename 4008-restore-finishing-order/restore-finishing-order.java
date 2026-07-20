@@ -1,11 +1,14 @@
+import java.util.*;
+import java.util.stream.*;
+
 class Solution {
     public int[] recoverOrder(int[] order, int[] friends) {
-        List<Integer> resultList = new ArrayList<>();
-        for (int id : order) {
-            if (Arrays.binarySearch(friends, id) >= 0) {
-                resultList.add(id);
-            }
-        }
-        return resultList.stream().mapToInt(i -> i).toArray();
+        Set<Integer> friendSet = Arrays.stream(friends)
+                                       .boxed()
+                                       .collect(Collectors.toSet());
+        
+        return Arrays.stream(order)
+                     .filter(friendSet::contains)
+                     .toArray();
     }
 }
