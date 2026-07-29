@@ -1,6 +1,5 @@
 class Solution:
     def smallestPalindrome(self, s: str, k: int) -> str:
-        # Precompute binomial coefficients for combinations
         INF = 10**6 + 1
         N = 24
         C = [[0] * N for _ in range(N)]
