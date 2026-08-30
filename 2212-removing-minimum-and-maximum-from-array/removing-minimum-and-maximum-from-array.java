@@ -8,7 +8,6 @@ class Solution {
             if (nums[i] < nums[minIndex]) {
                 minIndex = i;
             }
-
             if (nums[i] > nums[maxIndex]) {
                 maxIndex = i;
             }
@@ -19,6 +18,7 @@ class Solution {
         int fromFront = right + 1;
         int fromBack = n - left;
         int fromBothEnds = (left + 1) + (n - right);
+        
         return Math.min(fromFront, Math.min(fromBack, fromBothEnds));
     }
 }
