@@ -1,7 +1,6 @@
 class Solution {
     public int minimumDeletions(int[] nums) {
         int n = nums.length;
-
         int minIndex = 0;
         int maxIndex = 0;
 
@@ -17,16 +16,9 @@ class Solution {
 
         int left = Math.min(minIndex, maxIndex);
         int right = Math.max(minIndex, maxIndex);
-
-        // Remove both from the front
         int fromFront = right + 1;
-
-        // Remove both from the back
         int fromBack = n - left;
-
-        // Remove one from front and the other from back
         int fromBothEnds = (left + 1) + (n - right);
-
         return Math.min(fromFront, Math.min(fromBack, fromBothEnds));
     }
 }
