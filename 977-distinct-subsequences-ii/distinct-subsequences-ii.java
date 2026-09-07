@@ -1,25 +1,19 @@
 class Solution {
     public int distinctSubseqII(String s) {
-        int MOD = 1_000_000_007;
-        
-        long[] endsWith = new long[26];
-        
-        for (char c : s.toCharArray()) {
-            int idx = c - 'a';
-            
-            long sum = 0;
-            for (int i = 0; i < 26; i++) {
-                sum = (sum + endsWith[i]) % MOD;
-            }
-            
-            endsWith[idx] = (sum + 1) % MOD;
+        int n=s.length();
+        long[] last = new long[27];
+
+        long subSeqCount =0;
+        long count=1;
+        int mod =1000000007;
+        for(int i=0;i<n;i++){
+            int ch = (int)s.charAt(i)-97;
+            subSeqCount = (2*count-last[ch]+mod)%mod;
+            last[ch] = count;
+            count = subSeqCount;
         }
-        
-        long total = 0;
-        for (int i = 0; i < 26; i++) {
-            total = (total + endsWith[i]) % MOD;
-        }
-        
-        return (int) total;
+
+        return (int)(subSeqCount-1+mod)%mod;
     }
+
 }
