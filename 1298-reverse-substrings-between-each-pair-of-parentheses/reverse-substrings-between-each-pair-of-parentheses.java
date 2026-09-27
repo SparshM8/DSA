@@ -1,28 +1,28 @@
 class Solution {
     public String reverseParentheses(String s) {
-        int n = s.length();
         Deque<Integer> stack = new ArrayDeque<>();
-        int[] pair = new int[n];
-        for (int i = 0; i < n; i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);
-            } else if (s.charAt(i) == ')') {
-                int j = stack.pop();
-                pair[i] = j;
-                pair[j] = i;
-            }
-        }
-        
         StringBuilder sb = new StringBuilder();
-        int direction = 1;
-        for (int i = 0; i < n; i += direction) {
-            if (s.charAt(i) == '(' || s.charAt(i) == ')') {
-                i = pair[i];
-                direction = -direction;
+        
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                stack.push(sb.length());
+            } else if (c == ')') {
+                int start = stack.pop();
+                reverse(sb, start, sb.length() - 1);
             } else {
-                sb.append(s.charAt(i));
+                sb.append(c);
             }
         }
         return sb.toString();
+    }
+    
+    private void reverse(StringBuilder sb, int left, int right) {
+        while (left < right) {
+            char temp = sb.charAt(left);
+            sb.setCharAt(left, sb.charAt(right));
+            sb.setCharAt(right, temp);
+            left++;
+            right--;
+        }
     }
 }
