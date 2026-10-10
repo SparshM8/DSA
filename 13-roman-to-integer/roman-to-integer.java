@@ -1,27 +1,28 @@
 class Solution {
-    public int getVal(char ch1){
-        switch(ch1){
-            case 'I': return 1;
-            case 'V': return 5;
-            case 'X': return 10;
-            case 'L': return 50;
-            case 'C': return 100;
-            case 'D': return 500;
-            default: return 1000;
-        }
-    }
-
     public int romanToInt(String s) {
-        int sum = 0;
-        int n = s.length();
-        for (int i = 0; i < n; i++) {
-            char ch1 = s.charAt(i);
-            if ((i + 1) < n && getVal(ch1) < getVal(s.charAt(i + 1))) {
-                sum = sum - getVal(ch1);
-            } else {
-                sum = sum + getVal(ch1);
+        int total = 0;
+        int prevValue = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            int currValue = 0;
+            char c = s.charAt(i);
+            switch (c) {
+                case 'I': currValue = 1; break;
+                case 'V': currValue = 5; break;
+                case 'X': currValue = 10; break;
+                case 'L': currValue = 50; break;
+                case 'C': currValue = 100; break;
+                case 'D': currValue = 500; break;
+                case 'M': currValue = 1000; break;
             }
+            if (currValue < prevValue) {
+                total -= currValue;
+            } else {
+                total += currValue;
+            }
+            
+            prevValue = currValue;
         }
-        return sum;
+        
+        return total;
     }
 }
