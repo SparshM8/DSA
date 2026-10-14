@@ -3,7 +3,9 @@
  * @return {number}
  */
 var argumentsLength = function(...args) {
-    return args.length;
+    let count = 0;
+    while (args[count++] !== undefined) {}
+    return count-1;
 };
 
 /**
