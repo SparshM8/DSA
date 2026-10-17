@@ -1,17 +1,17 @@
 class Solution {
     public int minSwaps(int[] nums) {
         int n = nums.length;
-        long[] keyed = new long[n];  // digit sum in the high bits, value in the low bits
+        long[] keyed = new long[n]; 
         for (int i = 0; i < n; i++) keyed[i] = (long) digitSum(nums[i]) << 32 | nums[i];
         Arrays.sort(keyed);
-        Map<Integer, Integer> rank = new HashMap<>();  // final position of each value
+        Map<Integer, Integer> rank = new HashMap<>();  
         for (int k = 0; k < n; k++) rank.put((int) keyed[k], k);
-        int[] home = new int[n];  // where the value at each position must go
+        int[] home = new int[n]; 
         for (int i = 0; i < n; i++) home[i] = rank.get(nums[i]);
 
         int swaps = 0;
         for (int i = 0; i < n; i++) {
-            while (home[i] != i) {  // send the value at i home, take that spot's value in exchange
+            while (home[i] != i) {  
                 int j = home[i];
                 home[i] = home[j];
                 home[j] = j;
